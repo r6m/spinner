@@ -1,5 +1,7 @@
 module github.com/r6m/spinner
 
+go 1.16
+
 require (
 	github.com/fatih/color v1.7.0
 	github.com/leaanthony/synx v0.1.0
