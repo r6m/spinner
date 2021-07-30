@@ -4,10 +4,11 @@ package spinner
 type OptionFunc func(s *Spinner)
 
 // WithOptions passes spinner and runs every option func
-func (s *Spinner) WithOptions(opts ...OptionFunc) {
+func (s *Spinner) WithOptions(opts ...OptionFunc) *Spinner {
 	for _, f := range opts {
 		f(s)
 	}
+	return s
 }
 
 // WithExitOnAbort sets abortOnExit field to spinner
