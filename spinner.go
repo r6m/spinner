@@ -336,3 +336,8 @@ func (s *Spinner) Successf(format string, args ...interface{}) {
 	message := fmt.Sprintf(format, args...)
 	s.stop(message)
 }
+
+// ClearCurrentLine clears the current line
+func (s *Spinner) ClearCurrentLine() {
+	s.clearCurrentLine()
+}
