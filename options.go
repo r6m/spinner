@@ -7,3 +7,9 @@ func (s *Spinner) WithOptions(opts ...OptionFunc) {
 		f(s)
 	}
 }
+
+func WithExitOnAbort(exit bool) OptionFunc {
+	return func(s *Spinner) {
+		s.exitOnAbort = exit
+	}
+}

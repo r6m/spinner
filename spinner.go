@@ -61,6 +61,7 @@ type Spinner struct {
 	running       *synx.Bool        // Indicates if the spinner is running
 	abortMessage  *synx.String      // Printed when handling ctrl-c interrupt
 	isTerminal    *synx.Bool        // Flag indicating if we are outputting to terminal
+	exitOnAbort   bool
 }
 
 // NewSpinner creates a new spinner and sets up the default values.
@@ -85,6 +86,7 @@ func NewSpinner(optionalMessage ...string) *Spinner {
 		frameNumber:   0,
 		running:       synx.NewBool(false),
 		isTerminal:    synx.NewBool(isatty.IsTerminal(os.Stdout.Fd())),
+		exitOnAbort:   false,
 	}
 
 	return result
@@ -232,7 +234,9 @@ func (s *Spinner) Start(optionalMessage ...string) {
 		s.stopChan <- struct{}{}
 		fmt.Println("")
 		color.HiRed("\r%s %s", s.getErrorSymbol(), s.getAbortMessage())
-		os.Exit(1)
+		if s.exitOnAbort {
+			os.Exit(1)
+		}
 	}(s.stopChan)
 
 	// spawn off a goroutine to handle the animation.
