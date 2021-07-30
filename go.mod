@@ -1,4 +1,4 @@
-module github.com/leaanthony/spinner
+module github.com/r6m/spinner
 
 require (
 	github.com/fatih/color v1.7.0
