@@ -230,6 +230,8 @@ func (s *Spinner) Start(optionalMessage ...string) {
 		sigchan := make(chan os.Signal, 10)
 		signal.Notify(sigchan, os.Interrupt)
 		<-sigchan
+		// ignore incomming signals
+		signal.Stop(sigchan)
 		// Notify and clean up
 		s.stopChan <- struct{}{}
 		fmt.Println("")
