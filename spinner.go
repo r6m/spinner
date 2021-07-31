@@ -62,6 +62,7 @@ type Spinner struct {
 	abortMessage  *synx.String      // Printed when handling ctrl-c interrupt
 	isTerminal    *synx.Bool        // Flag indicating if we are outputting to terminal
 	exitOnAbort   bool
+	notifySignals bool // watch for incoming signal to abort
 }
 
 // NewSpinner creates a new spinner and sets up the default values.
@@ -227,7 +228,10 @@ func (s *Spinner) Start(optionalMessage ...string) {
 
 	// Handle ctrl-c
 	go func(stopChan chan struct{}) {
-		sigchan := make(chan os.Signal, 10)
+		if !s.notifySignals {
+			return
+		}
+		sigchan := make(chan os.Signal)
 		signal.Notify(sigchan, os.Interrupt)
 		<-sigchan
 		// ignore incomming signals
@@ -342,4 +346,10 @@ func (s *Spinner) Successf(format string, args ...interface{}) {
 // ClearCurrentLine clears the current line
 func (s *Spinner) ClearCurrentLine() {
 	s.clearCurrentLine()
+}
+
+func (s *Spinner) Stop() {
+	if s.getRunning() {
+		s.stopChan <- struct{}{}
+	}
 }

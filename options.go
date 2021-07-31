@@ -17,3 +17,9 @@ func WithExitOnAbort(exit bool) OptionFunc {
 		s.exitOnAbort = exit
 	}
 }
+
+func WithNotifySignals(notify bool) OptionFunc {
+	return func(s *Spinner) {
+		s.notifySignals = notify
+	}
+}
